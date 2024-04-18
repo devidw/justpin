@@ -3,6 +3,9 @@ import express from "express"
 import fs from "node:fs"
 import { exec } from "node:child_process"
 
+const SAVE_PATH = process.argv[2] ?? "../pins"
+console.info(SAVE_PATH)
+
 const expressApp = express()
 
 expressApp.use(express.json())
@@ -17,7 +20,7 @@ expressApp.post("/save", async (req, res) => {
   const data = await img.arrayBuffer()
   const ext = img.headers.get("content-type")?.split("/")[1] ?? "idk"
   // console.log(img.headers)
-  const path = `../pins/${Date.now()}.${ext}`
+  const path = `${SAVE_PATH}/${Date.now()}.${ext}`
   fs.writeFileSync(path, Buffer.from(data))
 
   exec(
